@@ -1,0 +1,631 @@
+/* =============================================
+   🎨 СТИЛИ ДЛЯ САЛОНА КРАСОТЫ
+   ============================================= */
+
+:root {
+    --primary-color:rgb(22, 228, 22)5;
+    --primary-dark: #c49595;
+    --primary-light: #f5e6e8;
+    --secondary-color: #392f5a;
+    --secondary-dark: #2a2242;
+    --accent-color: #e8c4c4;
+    --text-dark: #2d2d2d;
+    --text-light: #666;
+    --text-muted: #999;
+    --white: #ffffff;
+    --shadow: 0 5px 20px rgba(0,0,0,0.1);
+    --shadow-hover: 0 15px 40px rgba(0,0,0,0.2);
+    --transition: all 0.3s ease;
+    --radius: 15px;
+    --radius-lg: 25px;
+}
+
+/* 🌟 Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* 📱 Базовые стили */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #fafafa 0%, #f0f0f5 100%);
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* 🎨 Навигация */
+.navbar {
+    background: linear-gradient(135deg, var(--secondary-color), var(--secondary-dark)) !important;
+    box-shadow: var(--shadow);
+    padding: 1rem 0;
+    transition: var(--transition);
+}
+
+.navbar.scrolled {
+    padding: 0.5rem 0;
+    background: rgba(57, 47, 90, 0.98) !important;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--white) !important;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.navbar-brand i {
+    animation: float 3s ease-in-out infinite;
+}
+
+.nav-link {
+    color: rgba(255,255,255,0.9) !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    margin: 0 0.25rem;
+    border-radius: 8px;
+    transition: var(--transition);
+    position: relative;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--primary-color) !important;
+    background: rgba(212, 165, 165, 0.15);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--primary-color);
+    transition: var(--transition);
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+    width: 80%;
+}
+
+/* 🎨 Кнопки */
+.btn {
+    border-radius: 50px;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: var(--transition);
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    border: none;
+    box-shadow: 0 4px 15px rgba(212, 165, 165, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(212, 165, 165, 0.6);
+}
+
+.btn-outline-primary {
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary-color);
+    color: var(--white);
+    transform: translateY(-3px);
+}
+
+/* 🎨 Hero секция */
+.hero-section {
+    background: linear-gradient(135deg, 
+        rgba(57, 47, 90, 0.85), 
+        rgba(212, 165, 165, 0.3)),
+        url('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1920&q=80');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: var(--white);
+    padding: 120px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(212,165,165,0.1) 0%, transparent 70%);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 2;
+    animation: fadeIn 1s ease-out;
+}
+
+.hero-section h1 {
+    font-weight: 800;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-section .lead {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    margin-bottom: 2rem;
+    opacity: 0.95;
+}
+
+/* 🎨 Карточки услуг */
+.service-card {
+    border: none;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    overflow: hidden;
+    animation: fadeIn 0.6s ease-out backwards;
+}
+
+.service-card:nth-child(1) { animation-delay: 0.1s; }
+.service-card:nth-child(2) { animation-delay: 0.2s; }
+.service-card:nth-child(3) { animation-delay: 0.3s; }
+.service-card:nth-child(4) { animation-delay: 0.4s; }
+.service-card:nth-child(5) { animation-delay: 0.5s; }
+.service-card:nth-child(6) { animation-delay: 0.6s; }
+
+.service-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: var(--shadow-hover);
+}
+
+.service-card .card-body {
+    padding: 2rem;
+}
+
+.service-card i {
+    transition: var(--transition);
+}
+
+.service-card:hover i {
+    transform: scale(1.2) rotate(5deg);
+}
+
+.service-card .badge {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+/* 🎨 Карточки мастеров */
+.master-card {
+    border: none;
+    border-radius: var(--radius-lg);
+    background: var(--white);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    overflow: hidden;
+    animation: fadeIn 0.6s ease-out backwards;
+}
+
+.master-card:nth-child(1) { animation-delay: 0.1s; }
+.master-card:nth-child(2) { animation-delay: 0.2s; }
+.master-card:nth-child(3) { animation-delay: 0.3s; }
+.master-card:nth-child(4) { animation-delay: 0.4s; }
+
+.master-card:hover {
+    transform: translateY(-10px);
+    box-shadow: var(--shadow-hover);
+}
+
+.master-card img {
+    height: 250px;
+    object-fit: cover;
+    transition: var(--transition);
+}
+
+.master-card:hover img {
+    transform: scale(1.1);
+}
+
+.master-card .card-body {
+    padding: 1.5rem;
+}
+
+/* ⭐ Звёздочки рейтинга */
+.rating {
+    display: flex;
+    gap: 2px;
+    justify-content: center;
+}
+
+.rating i {
+    color: #ddd;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.rating .fas {
+    color: #ffc107;
+    text-shadow: 0 2px 4px rgba(255, 193, 7, 0.3);
+}
+
+.rating .fas:hover {
+    transform: scale(1.2);
+}
+
+.rating span {
+    margin-left: 0.5rem;
+    color: var(--text-light);
+    font-size: 0.875rem;
+}
+
+/* 🎨 Формы */
+.form-control {
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 0.875rem 1.25rem;
+    font-size: 1rem;
+    transition: var(--transition);
+    background: var(--white);
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(212, 165, 165, 0.15);
+    outline: none;
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+}
+
+/* 🎨 Карточки */
+.card {
+    border: none;
+    border-radius: var(--radius);
+    background: var(--white);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-light), var(--white));
+    border-radius: var(--radius) var(--radius) 0 0 !important;
+    border: none;
+    padding: 1.25rem 1.5rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-footer {
+    background: transparent;
+    border: none;
+    padding: 0 1.5rem 1.5rem;
+}
+
+/* 🎨 Footer */
+.footer {
+    background: linear-gradient(135deg, var(--secondary-color), var(--secondary-dark));
+    color: var(--white);
+    padding: 3rem 0 1.5rem;
+    margin-top: 4rem;
+}
+
+.footer h5 {
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.footer p {
+    opacity: 0.9;
+    margin-bottom: 0.5rem;
+}
+
+.footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.footer a:hover {
+    color: var(--white);
+    text-decoration: underline;
+}
+
+.footer hr {
+    border-color: rgba(255,255,255,0.15);
+}
+
+/* 🎨 Уведомления */
+.alert {
+    border: none;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    animation: fadeIn 0.4s ease-out;
+}
+
+.alert-dismissible .btn-close {
+    padding: 1.25rem;
+}
+
+/* 🎨 Списки */
+.list-group-item {
+    border: none;
+    border-radius: 12px !important;
+    margin-bottom: 0.75rem;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.list-group-item:hover {
+    transform: translateX(5px);
+    box-shadow: var(--shadow-hover);
+}
+
+/* 📱 АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ */
+
+/* Планшеты */
+@media (max-width: 991px) {
+    .hero-section {
+        padding: 80px 0;
+    }
+    
+    .hero-section h1 {
+        font-size: 2.5rem;
+    }
+}
+
+/* Мобильные */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0.75rem 0;
+    }
+    
+    .navbar-brand {
+        font-size: 1.25rem;
+    }
+    
+    .navbar-toggler {
+        border: 2px solid var(--primary-color);
+        padding: 0.25rem 0.5rem;
+    }
+    
+    .navbar-toggler-icon {
+        filter: brightness(0) invert(1);
+    }
+    
+    .hero-section {
+        padding: 60px 0;
+        background-attachment: scroll;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-section .lead {
+        font-size: 1rem;
+    }
+    
+    .service-card,
+    .master-card {
+        margin-bottom: 1.5rem;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .btn-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .btn-group .btn {
+        width: auto;
+        margin: 0;
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+    }
+    
+    .card-body,
+    .card-header,
+    .card-footer {
+        padding: 1rem;
+    }
+    
+    .form-control {
+        padding: 0.75rem 1rem;
+        font-size: 0.95rem;
+    }
+    
+    .rating {
+        gap: 1px;
+    }
+    
+    .rating i {
+        font-size: 0.9rem;
+    }
+}
+
+/* Маленькие экраны */
+@media (max-width: 480px) {
+    .hero-section h1 {
+        font-size: 1.75rem;
+    }
+    
+    .hero-section .btn-lg {
+        padding: 0.625rem 1.5rem;
+        font-size: 0.95rem;
+    }
+    
+    .service-card .card-body {
+        padding: 1.5rem;
+    }
+    
+    .service-card i {
+        font-size: 2.5rem;
+    }
+    
+    .master-card img {
+        height: 200px;
+    }
+    
+    .footer {
+        padding: 2rem 0 1rem;
+        text-align: center;
+    }
+    
+    .footer .row > div {
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* 🎨 Дополнительные эффекты */
+
+/* Плавная прокрутка */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Эффект при наведении на ссылки */
+a:not(.btn):not(.dropdown-item):not(.nav-link) {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: var(--transition);
+    position: relative;
+}
+
+a:not(.btn):not(.dropdown-item):not(.nav-link)::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--primary-color);
+    transition: var(--transition);
+}
+
+a:not(.btn):not(.dropdown-item):not(.nav-link):hover::after {
+    width: 100%;
+}
+
+/* Анимация загрузки */
+.loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2rem;
+    height: 2rem;
+    margin: -1rem 0 0 -1rem;
+    border: 3px solid rgba(212, 165, 165, 0.3);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Эффект появления при прокрутке */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 🎨 Цветовые акценты для категорий */
+.category-hair { background: linear-gradient(135deg, #ffd4a5, #ffab91); }
+.category-nails { background: linear-gradient(135deg, #f5e6e8, #e8c4c4); }
+.category-cosmetics { background: linear-gradient(135deg, #c4a5d4, #b895c4); }
+.category-massage { background: linear-gradient(135deg, #a5d4c4, #95c4b8); }
+.category-other { background: linear-gradient(135deg, #d4d4a5, #c4c495); }
+
+.badge {
+    font-weight: 500;
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+}
+
+/* Статусы записей */
+.status-pending { color: #ffc107; }
+.status-confirmed { color: #28a745; }
+.status-completed { color: #6c757d; }
+.status-cancelled { color: #dc3545; }

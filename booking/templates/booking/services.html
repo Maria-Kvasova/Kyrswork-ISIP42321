@@ -1,0 +1,40 @@
+{% extends 'booking/base.html' %}
+
+{% block title %}Услуги - Салон Красоты{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h1 class="text-center mb-5"><i class="fas fa-spa"></i> Наши услуги</h1>
+        
+        <!-- Список услуг -->
+        <div class="row g-4">
+            {% for service in services %}
+            <div class="col-md-4">
+                <div class="card service-card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-spa fa-3x mb-3" style="color: var(--primary-color);"></i>
+                        <h5 class="card-title">{{ service.name }}</h5>
+                        <p class="card-text text-muted">{{ service.description|truncatewords:20 }}</p>
+                        <p class="fw-bold text-primary">{{ service.price }} руб.</p>
+                        <p class="text-muted small">
+                            <i class="fas fa-clock"></i> {{ service.duration }} мин.
+                        </p>
+                        <span class="badge bg-secondary">{{ service.get_category_display }}</span>
+                    </div>
+                    <div class="card-footer bg-white border-0 text-center pb-3">
+                        <a href="{% url 'booking' %}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-calendar-plus"></i> Записаться
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted">Услуги пока не добавлены.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

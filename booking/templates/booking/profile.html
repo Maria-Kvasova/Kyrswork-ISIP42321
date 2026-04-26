@@ -1,0 +1,117 @@
+{% extends 'booking/base.html' %}
+
+{% block title %}Личный кабинет - Салон Красоты{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Информация о пользователе -->
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h5 class="mb-0"><i class="fas fa-user"></i> Профиль</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <i class="fas fa-user-circle fa-5x text-muted"></i>
+                        </div>
+                        <p><strong>Имя:</strong> {{ user.username }}</p>
+                        <p><strong>Email:</strong> {{ user.email }}</p>
+                        <p><strong>Телефон:</strong> {{ profile.phone|default:"Не указан" }}</p>
+                        <p><strong>Записей всего:</strong> {{ upcoming|length }} + {{ history|length }}</p>
+                        <hr>
+                        <a href="{% url 'logout' %}" class="btn btn-outline-danger w-100">
+                            <i class="fas fa-sign-out-alt"></i> Выйти
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Предстоящие записи -->
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-calendar-check"></i> Предстоящие записи</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if upcoming %}
+                            <div class="list-group">
+                                {% for appointment in upcoming %}
+                                <div class="list-group-item list-group-item-action">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">
+                                            <i class="fas fa-cut"></i> {{ appointment.service.name }}
+                                        </h6>
+                                        <small class="text-primary">{{ appointment.get_status_display }}</small>
+                                    </div>
+                                    <p class="mb-1">
+                                        <i class="fas fa-user-tie"></i> Мастер: {{ appointment.master.full_name }}
+                                    </p>
+                                    <p class="mb-1">
+                                        <i class="fas fa-clock"></i> {{ appointment.datetime|date:"d.m.Y H:i" }}
+                                    </p>
+                                    {% if appointment.comments %}
+                                    <small class="text-muted">
+                                        <i class="fas fa-comment"></i> {{ appointment.comments|truncatewords:10 }}
+                                    </small>
+                                    {% endif %}
+                                    <div class="mt-2">
+                                        <form method="post" action="{% url 'cancel_appointment' appointment.id %}" style="display:inline;">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-sm btn-outline-danger cancel-appointment">
+                                                <i class="fas fa-times"></i> Отменить
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted text-center">
+                                <i class="fas fa-calendar-times"></i> У вас пока нет предстоящих записей
+                            </p>
+                            <div class="text-center">
+                                <a href="{% url 'booking' %}" class="btn btn-primary">
+                                    <i class="fas fa-calendar-plus"></i> Записаться
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- История записей -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-history"></i> История записей</h5>
+                    </div>
+                    <div class="card-body">
+                        {% if history %}
+                            <div class="list-group">
+                                {% for appointment in history %}
+                                <div class="list-group-item">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1">{{ appointment.service.name }}</h6>
+                                        <small class="text-success">{{ appointment.get_status_display }}</small>
+                                    </div>
+                                    <p class="mb-1">
+                                        <i class="fas fa-user-tie"></i> {{ appointment.master.full_name }}
+                                    </p>
+                                    <small class="text-muted">
+                                        <i class="fas fa-calendar"></i> {{ appointment.datetime|date:"d.m.Y H:i" }}
+                                    </small>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p class="text-muted text-center">
+                                <i class="fas fa-history"></i> История пуста
+                            </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

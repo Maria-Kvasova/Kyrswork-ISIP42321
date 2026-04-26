@@ -1,0 +1,70 @@
+{% extends 'booking/base.html' %}
+{% block title %}Мастера - Maria Beauty{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <h1 class="text-center mb-2"><i class="fas fa-user-tie"></i> Наши мастера</h1>
+        <p class="text-center text-muted mb-5">Профессионалы с любовью к своему делу</p>
+        
+        <div class="row g-4">
+            {% for master in masters %}
+            <div class="col-md-3 col-sm-6">
+                <div class="card master-card h-100">
+                    <div class="position-relative overflow-hidden">
+                        {% if master.photo %}
+                            <img src="{{ master.photo.url }}" class="card-img-top" alt="{{ master.full_name }}" loading="lazy">
+                        {% else %}
+                            <img src="https://ui-avatars.com/api/?name={{ master.full_name|urlencode }}&background=d4a5a5&color=fff&size=300" class="card-img-top" alt="{{ master.full_name }}" loading="lazy">
+                        {% endif %}
+                        <span class="position-absolute top-0 end-0 m-3 badge {% if master.is_available %}bg-success{% else %}bg-secondary{% endif %}">
+                            {% if master.is_available %}✓{% else %}✗{% endif %}
+                        </span>
+                    </div>
+                    
+                    <div class="card-body text-center">
+                        <h6 class="card-title fw-bold mb-1">{{ master.full_name }}</h6>
+                        <p class="card-text text-muted small mb-2">{{ master.specialization }}</p>
+                        
+                        <div class="rating mb-2">
+                            {% for i in "12345"|make_list %}
+                                {% if forloop.counter <= master.rating|floatformat:"0"|add:0 %}
+                                    <i class="fas fa-star"></i>
+                                {% else %}
+                                    <i class="far fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="text-muted">({{ master.rating }})</span>
+                        </div>
+                        
+                        {% if master.is_available %}
+                            <span class="badge bg-success-subtle text-success">🟢 Доступен</span>
+                        {% else %}
+                            <span class="badge bg-secondary-subtle text-secondary">🔴 Недоступен</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-footer bg-white border-0 text-center pb-3">
+                        <!-- 🔥 ССЫЛКА С master_id -->
+                        <a href="{% url 'booking' %}?master_id={{ master.id }}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-calendar-plus"></i> Записаться
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-users fa-4x text-muted mb-3"></i>
+                <p class="text-muted">Мастера пока не добавлены.</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-5">
+            <a href="{% url 'booking' %}" class="btn btn-primary btn-lg">
+                <i class="fas fa-calendar-plus"></i> Записаться онлайн
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

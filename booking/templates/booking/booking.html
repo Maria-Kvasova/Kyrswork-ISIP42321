@@ -1,0 +1,204 @@
+{% extends 'booking/base.html' %}
+{% block title %}Записаться - Maria Beauty{% endblock %}
+
+{% block content %}
+<section class="py-5 booking-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                
+                <!-- Заголовок -->
+                <div class="text-center mb-4">
+                    <h1 class="display-5 fw-bold mb-2">
+                        <i class="fas fa-calendar-check"></i> Онлайн-запись
+                    </h1>
+                    <p class="text-muted">Заполните форму и подтвердите запись</p>
+                </div>
+                
+                <!-- 🔥 КАРТОЧКА МАСТЕРА (ЕСЛИ ВЫБРАН) -->
+                {% if master %}
+                <div class="card master-info-card mb-4">
+                    <div class="card-body text-center">
+                        <div class="master-avatar mb-3">
+                            {% if master.photo %}
+                                <img src="{{ master.photo.url }}" alt="{{ master.full_name }}" 
+                                     class="rounded-circle" 
+                                     style="width: 120px; height: 120px; object-fit: cover; border: 4px solid #e91e8c;">
+                            {% else %}
+                                <i class="fas fa-user-circle fa-5x"></i>
+                            {% endif %}
+                        </div>
+                        <h4 class="mb-1 text-primary">{{ master.full_name }}</h4>
+                        <p class="text-muted mb-2">
+                            <i class="fas fa-briefcase"></i> {{ master.specialization }}
+                        </p>
+                        <div class="rating-inline mb-2">
+                            {% for i in "12345"|make_list %}
+                                {% if forloop.counter <= master.rating|floatformat:"0"|add:0 %}
+                                    <i class="fas fa-star"></i>
+                                {% else %}
+                                    <i class="far fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                            <span class="ms-2 text-muted">({{ master.rating }})</span>
+                        </div>
+                        {% if master.is_available %}
+                            <span class="badge bg-success-subtle text-success">
+                                <i class="fas fa-check-circle"></i> Доступен для записи
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Форма записи -->
+                <div class="card booking-form-card">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-edit"></i> Данные записи</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            
+                            <!-- 🔥 СКРЫТОЕ ПОЛЕ: если мастер выбран -->
+                            {% if master %}
+                                <input type="hidden" name="master" value="{{ master.id }}">
+                            {% endif %}
+                            
+                            <!-- Услуга -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-cut"></i> Выберите услугу
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-spa"></i></span>
+                                    {{ form.service }}
+                                </div>
+                                {% if form.service.errors %}
+                                    <div class="text-danger small mt-1">{{ form.service.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- 🔥 Мастер: показываем выбор, ТОЛЬКО если не выбран -->
+                            {% if not master %}
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-user-tie"></i> Выберите мастера
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    {{ form.master }}
+                                </div>
+                                {% if form.master.errors %}
+                                    <div class="text-danger small mt-1">{{ form.master.errors }}</div>
+                                {% endif %}
+                            </div>
+                            {% endif %}
+                            
+                            <!-- Дата и время -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-clock"></i> Дата и время
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                                    {{ form.datetime }}
+                                </div>
+                                {% if form.datetime.errors %}
+                                    <div class="text-danger small mt-1">{{ form.datetime.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Комментарии -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-comment-dots"></i> Комментарии
+                                </label>
+                                {{ form.comments }}
+                                {% if form.comments.errors %}
+                                    <div class="text-danger small mt-1">{{ form.comments.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Кнопка -->
+                            <button type="submit" class="btn btn-primary w-100 btn-lg booking-submit-btn">
+                                <i class="fas fa-check-circle"></i> Подтвердить запись
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Стили -->
+<style>
+.booking-section {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+    min-height: 100vh;
+    padding: 3rem 0;
+}
+.master-info-card {
+    border: none;
+    border-radius: 20px;
+    background: #fff;
+    box-shadow: 0 10px 40px rgba(233, 30, 140, 0.15);
+}
+.master-info-card h4 {
+    color: #2d1b4e;
+    font-weight: 700;
+}
+.rating-inline { color: #ffd700; font-size: 1.1rem; }
+.booking-form-card {
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+.booking-form-card .card-header {
+    background: linear-gradient(135deg, #e91e8c, #ff60b8);
+    color: white;
+    border: none;
+    padding: 1.5rem;
+    font-weight: 700;
+}
+.booking-form-card .form-label {
+    color: #2d1b4e;
+    font-weight: 600;
+}
+.booking-form-card .form-control,
+.booking-form-card .form-select {
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 0.875rem 1rem;
+}
+.booking-form-card .form-control:focus,
+.booking-form-card .form-select:focus {
+    border-color: #e91e8c;
+    box-shadow: 0 0 0 4px rgba(233, 30, 140, 0.15);
+    outline: none;
+}
+.booking-form-card .input-group-text {
+    background: linear-gradient(135deg, #e91e8c, #ff60b8);
+    color: white;
+    border: none;
+    border-radius: 12px 0 0 12px;
+}
+.booking-form-card .input-group .form-control,
+.booking-form-card .input-group .form-select {
+    border-radius: 0 12px 12px 0;
+}
+.booking-submit-btn {
+    background: linear-gradient(135deg, #e91e8c, #ff60b8);
+    border: none;
+    font-weight: 700;
+    padding: 1rem;
+    box-shadow: 0 4px 20px rgba(233, 30, 140, 0.4);
+}
+.booking-submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(233, 30, 140, 0.6);
+}
+</style>
+{% endblock %}
